@@ -15,7 +15,7 @@ export const dynamic = "force-dynamic";
  * y se transmite la respuesta delta a delta.
  */
 export async function POST(req: NextRequest) {
-  const { rateLimit: maxPerMinute, model: defaultModel } = getAiConfig();
+  const { rateLimit: maxPerMinute, hideProvider } = getAiConfig();
 
   if (!rateLimit(req, maxPerMinute)) {
     return NextResponse.json(
@@ -49,10 +49,22 @@ export async function POST(req: NextRequest) {
 
   const { messages, model } = parsed.data;
 
+  // En modo marca blanca, el modelo solo puede llegar como token cifrado
+  // (o "auto" = por defecto). Nombres literales se redirigen al modelo por defecto.
+  let effectiveModel = model || getAiConfig().model;
+  if (hideProvider) {
+    if (model && model !== "auto") {
+      const { unmaskModel } = await import("@/lib/identify");
+      effectiveModel = unmaskModel(model) ?? getAiConfig().model;
+    } else {
+      effectiveModel = getAiConfig().model;
+    }
+  }
+
   try {
     return await chatStream(
       [{ role: "system", content: SYSTEM_PROMPT }, ...messages],
-      model || defaultModel
+      effectiveModel
     );
   } catch (err) {
     const status = (err as { status?: number })?.status ?? 500;

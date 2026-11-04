@@ -29,6 +29,13 @@ interface SidebarProps {
   onOpenSettings: () => void;
 }
 
+function friendlyModelLabel(model: string): string {
+  if (!model || model === "auto") return "Motor recomendado";
+  if (/^(Motor|codemind)/i.test(model)) return model;
+  // Token cifrado (marca blanca)
+  return "Motor seleccionado";
+}
+
 export default function Sidebar({
   conversations,
   activeId,
@@ -195,7 +202,7 @@ export default function Sidebar({
             <Settings className="h-4 w-4 shrink-0 text-slate-400" />
             <div className="min-w-0 flex-1">
               <p className="truncate text-xs font-medium text-slate-300">{providerName}</p>
-              <p className="truncate text-[10px] text-slate-500">{model || "modelo no definido"}</p>
+              <p className="truncate text-[10px] text-slate-500">{friendlyModelLabel(model)}</p>
             </div>
             <span
               className={`h-2 w-2 shrink-0 rounded-full ${

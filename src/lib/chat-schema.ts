@@ -14,12 +14,12 @@ export const chatRequestSchema = z.object({
     )
     .min(1, "Necesitas al menos un mensaje")
     .max(40, "Demasiados mensajes en la conversación"),
-  model: z.string().max(120).optional(),
+  model: z.string().max(256).optional(),
 });
 
 export type ChatRequest = z.infer<typeof chatRequestSchema>;
 
 /** Esquema del cuerpo de /api/models */
 export const modelsRequestSchema = z.object({
-  model: z.string().max(120).optional(),
+  model: z.string().max(256).optional(),
 });

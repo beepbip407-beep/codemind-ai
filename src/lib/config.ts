@@ -10,8 +10,11 @@ export function getAiConfig() {
   const model = process.env.AI_MODEL || "gpt-4o-mini";
   const providerName = process.env.AI_PROVIDER_NAME || "el proveedor configurado";
   const rateLimit = Number(process.env.RATE_LIMIT_PER_MINUTE ?? 20) || 20;
+  // Marca blanca: ocultar el proveedor real al público
+  const hideProvider = (process.env.HIDE_PROVIDER ?? "false").toLowerCase() === "true";
+  const providerBrand = process.env.PROVIDER_BRAND || "CodeMind Core";
 
-  return { baseUrl, apiKey, model, providerName, rateLimit };
+  return { baseUrl, apiKey, model, providerName, providerBrand, hideProvider, rateLimit };
 }
 
 /** Indica si el proveedor de IA está configurado correctamente. */

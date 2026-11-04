@@ -9,11 +9,11 @@ export const dynamic = "force-dynamic";
  * Estado del servidor y del proveedor de IA. No expone claves.
  */
 export async function GET() {
-  const { providerName, model } = getAiConfig();
+  const { providerName, model, providerBrand, hideProvider } = getAiConfig();
   return NextResponse.json({
     ok: true,
     aiConfigured: isAiConfigured(),
-    providerName,
-    defaultModel: model,
+    providerName: hideProvider ? providerBrand : providerName,
+    defaultModel: hideProvider ? "auto" : model,
   });
 }

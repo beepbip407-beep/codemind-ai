@@ -83,7 +83,7 @@ export default function Workspace() {
     setHydrated(true);
 
     const storedModel = localStorage.getItem(MODEL_KEY);
-    if (storedModel) setModel(storedModel);
+    setModel(storedModel ?? "auto");
 
     // Estado del proveedor (sin exponer nada sensible)
     fetch("/api/health")
@@ -91,8 +91,7 @@ export default function Workspace() {
       .then((j) => {
         setAiConfigured(Boolean(j?.aiConfigured));
         if (j?.providerName) setProviderName(j.providerName);
-        if (j?.defaultModel && !storedModel) setModel(j.defaultModel);
-      })
+        if (j?.defaultModel && !storedModel) setModel(j.defaultModel);      })
       .catch(() => setAiConfigured(false));
   }, []);
 

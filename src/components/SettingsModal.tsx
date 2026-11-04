@@ -12,10 +12,16 @@ interface SettingsModalProps {
   aiConfigured: boolean;
 }
 
+interface ModelEntry {
+  label: string;
+  value: string;
+}
+
 interface ModelsResponse {
   provider?: string;
   default?: string;
-  models?: string[];
+  masked?: boolean;
+  models?: ModelEntry[];
   error?: string;
 }
 
@@ -27,7 +33,7 @@ export default function SettingsModal({
   onSelectModel,
   aiConfigured,
 }: SettingsModalProps) {
-  const [models, setModels] = useState<string[]>([]);
+  const [models, setModels] = useState<ModelEntry[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState("");
@@ -54,7 +60,7 @@ export default function SettingsModal({
   if (!open) return null;
 
   const filtered = models.filter((m) =>
-    m.toLowerCase().includes(filter.toLowerCase())
+    m.label.toLowerCase().includes(filter.toLowerCase())
   );
 
   return (
@@ -124,25 +130,27 @@ export default function SettingsModal({
               />
               {filtered.length === 0 ? (
                 <p className="py-6 text-center text-xs text-slate-500">
-                  Ningún modelo coincide con «{filter}».
+                  Ningún motor coincide con «{filter}».
                 </p>
               ) : (
                 <ul className="space-y-1">
                   {filtered.map((m) => (
-                    <li key={m}>
+                    <li key={m.value}>
                       <button
                         onClick={() => {
-                          onSelectModel(m);
+                          onSelectModel(m.value);
                           onClose();
                         }}
                         className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs transition ${
-                          m === currentModel
+                          m.value === currentModel
                             ? "bg-indigo-600/30 text-indigo-100"
                             : "text-slate-300 hover:bg-ink-800"
                         }`}
                       >
-                        <span className="truncate font-mono">{m}</span>
-                        {m === currentModel && <Check className="h-3.5 w-3.5 text-indigo-300" />}
+                        <span className="truncate">{m.label}</span>
+                        {m.value === currentModel && (
+                          <Check className="h-3.5 w-3.5 text-indigo-300" />
+                        )}
                       </button>
                     </li>
                   ))}
@@ -154,7 +162,7 @@ export default function SettingsModal({
 
         <div className="border-t border-ink-700/70 px-5 py-3 text-[11px] text-slate-500">
           La lista se consulta en vivo a <code className="text-slate-400">GET /api/models</code>{" "}
-          <RefreshCw className="inline h-3 w-3" /> Cada petición usa este modelo en el cuerpo de /api/chat.
+          <RefreshCw className="inline h-3 w-3" /> Cada petición usa este motor en /api/chat.
         </div>
       </div>
     </div>

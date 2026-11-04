@@ -252,17 +252,22 @@ export async function listModels(): Promise<string[]> {
       name?: string;
       supportedGenerationMethods?: string[];
     }> = json?.models ?? [];
-    const unsuitable = /embedding|tts|imagen|veo|aqa|omni|audio/;
+    // Solo modelos de CHAT de texto (Gemini/Gemma); excluye imagen, audio,
+    // embeddings, agentes experimentales, música, robótica, investigación, etc.
+    const chatLike = /^(models\/)?(gemini|gemma)/;
+    const notChat =
+      /image|tts|audio|transcribe|omni|aqa|lyria|antigravity|deep-research|robotics|computer-use|nano|argos|2\.5|preview/i;
     return models
       .filter(
         (m) =>
           m.name &&
           (m.supportedGenerationMethods?.includes("generateContent") ?? true) &&
-          !unsuitable.test(m.name)
+          chatLike.test(m.name) &&
+          !notChat.test(m.name)
       )
       .map((m) => m.name!.replace(/^models\//, ""))
       .sort((a, b) => a.localeCompare(b))
-      .slice(0, 200);
+      .slice(0, 15);
   }
 
   // Formato OpenAI: { data: [{ id: "…" }] }

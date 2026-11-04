@@ -132,3 +132,13 @@ src/
 - El historial de conversaciones se guarda en `localStorage` de tu navegador (no sale de tu equipo).
 - Monaco Editor se carga por CDN en el cliente (lo habitual con `@monaco-editor/react`).
 - Requiere Node.js 18.17+.
+
+## Marca blanca (ocultar el proveedor)
+
+Con `HIDE_PROVIDER=true` (y `PROVIDER_BRAND` con el nombre público de tu elección):
+
+- 🤖 **La IA nunca lo revela**: el prompt de sistema prohíbe mencionar el modelo/proveedor subyacente; ante la pregunta, responde que es CodeMind AI con tecnología propia.
+- 🖥️ **La interfaz no lo muestra**: el sidebar y el panel de configuración muestran `PROVIDER_BRAND` y los modelos aparecen como «Motor recomendado», «Motor 1», «Motor 2»…
+- 🔐 **La API pública no lo filtra**: `/api/models` devuelve tokens cifrados (AES-256-GCM con una clave derivada de tu API key); `/api/chat` solo acepta esos tokens o `auto`, así que no conoces los nombres reales aunque inspecciones la petición.
+
+Configura los nombres reales igual que siempre en `.env.local`; solo tú (el propietario del servidor) los conoces.
