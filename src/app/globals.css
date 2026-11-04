@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  @apply bg-ink-950 text-slate-200 antialiased;
+}
+
+/* Scrollbars discretas */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #3a4666 transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #3a4666;
+  border-radius: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Resaltado de sintaxis (highlight.js, tema oscuro propio) */
+.hljs {
+  color: #e2e8f0;
+  background: transparent;
+}
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-doctag {
+  color: #c792ea;
+}
+.hljs-title,
+.hljs-title.function_,
+.hljs-title.class_,
+.hljs-section {
+  color: #82aaff;
+}
+.hljs-string,
+.hljs-regexp,
+.hljs-addition,
+.hljs-attribute {
+  color: #c3e88d;
+}
+.hljs-number,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-variable,
+.hljs-template-variable {
+  color: #f78c6c;
+}
+.hljs-comment,
+.hljs-quote {
+  color: #64748b;
+  font-style: italic;
+}
+.hljs-type,
+.hljs-built_in,
+.hljs-builtin-name {
+  color: #ffcb6b;
+}
+.hljs-meta,
+.hljs-deletion {
+  color: #ff5370;
+}
+.hljs-attr,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-id {
+  color: #9cdcfe;
+}
+.hljs-tag,
+.hljs-name {
+  color: #7fdbff;
+}
+
+/* Acentos suaves para el fondo */
+.bg-aurora {
+  background-image:
+    radial-gradient(60rem 30rem at 110% -10%, rgba(99, 102, 241, 0.13), transparent 60%),
+    radial-gradient(50rem 28rem at -15% 110%, rgba(56, 189, 248, 0.08), transparent 60%);
+}
